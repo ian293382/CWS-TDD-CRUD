@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
+from .forms import NewTaskForm
 from .models import Task
 
 # Create your views here.
@@ -13,3 +14,17 @@ def detail(request, pk):
     task = Task.objects.get(pk=pk)
 
     return render(request, 'task/detail.html', {'task': task})
+
+
+def new(request):
+    if request.method == "POST":
+      form = NewTaskForm(request.POST)
+
+      if form.is_valid():
+          form.save()
+
+          return redirect('/')
+    else:
+      form = NewTaskForm()
+
+    return render(request, 'task/new.html', {'form': form})
