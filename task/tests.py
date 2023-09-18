@@ -171,3 +171,17 @@ class UpdatePageTest(TestCase):
         self.assertRedirects(response, expected_url='/')
         self.assertEqual(Task.objects.count(), 1)
         self.assertEqual(Task.objects.first().title, 'The title')
+
+
+class DeletePage(TestCase):
+    def setUp(self):
+        self.task = Task.objects.create(title='First task')
+
+    def test_delete_page_DELETE_TASK(self):
+        self.assertEqual(Task.objects.count(), 1)
+
+
+        response = self.client.get(f'/{self.task.id}/delete/')
+
+        self.assertRedirects(response, expected_url='/')
+        self.assertEqual(Task.objects.count(), 0)

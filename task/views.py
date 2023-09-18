@@ -43,3 +43,10 @@ def update(request, pk):
       form = UpdateTaskForm()
 
     return render(request, 'task/update.html', {'task': task, 'form': form})
+
+def delete(request, pk):
+    task = Task.objects.get(pk=pk)
+
+    task.delete()
+
+    return redirect('/')
